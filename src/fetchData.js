@@ -2,7 +2,10 @@ const axios = require("axios");
 const fs = require("fs");
 const path = require("path");
 
-const url = "https://microsoftedge.github.io/Demos/json-dummy-data/256KB.json";
+const env = require("dotenv");
+env.config();
+
+const url = process.env.DUMMY_DATA_URL;
 
 const fetchData = async () => {
   try {
