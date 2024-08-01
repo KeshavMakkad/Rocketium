@@ -43,3 +43,7 @@ Follow these steps to set up the project:
 
     Now the server will start on your local system on the port provided in the .env file.
     If no port is provided, 3000 will be used by default
+
+## Usage
+
+For usage, check out the [Postman Documentation](https://documenter.getpostman.com/view/33552124/2sA3kdBJAQ)
