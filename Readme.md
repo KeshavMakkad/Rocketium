@@ -6,22 +6,22 @@ Follow these steps to set up the project:
 
 1. Clone the repository by running:
 
-   ```
-    git clone https://github.com/KeshavMakkad/Rocketium
-   ```
+    ```
+     git clone https://github.com/KeshavMakkad/Rocketium
+    ```
 
 2. Navigate to your repository by running:
 
-   ```
-   cd <Name_Of_Your_Repository>
+    ```
+    cd Rocketium
 
-   ```
+    ```
 
 3. Install the required dependencies by running:
 
-   ```
-   npm i
-   ```
+    ```
+    npm i
+    ```
 
 ## Running the application
 
@@ -29,17 +29,17 @@ Follow these steps to set up the project:
 
 2. Fetch the data from by running:
 
-   ```
+    ```
 
-   npm run fetch
-   ```
+    npm run fetch
+    ```
 
 3. Start the server by running:
 
-   ```
+    ```
 
-   npm start
-   ```
+    npm start
+    ```
 
-   Now the server will start on your local system on the port provided in the .env file.
-   If no port is provided, 3000 will be used by default
+    Now the server will start on your local system on the port provided in the .env file.
+    If no port is provided, 3000 will be used by default

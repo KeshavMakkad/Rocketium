@@ -1,64 +1,27 @@
-const express = require("express");
-const fs = require("fs").promises;
-const path = require("path");
+import express from "express";
+import path from "path";
+import { fileURLToPath } from "url";
+import DataHandler from "./DataHandler.js";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const router = express.Router();
-const filePath = path.join(__dirname, "../../Data/dummyData.json");
 
-const readJsonFile = async (filePath) => {
-  try {
-    const data = await fs.readFile(filePath, "utf8");
-    return JSON.parse(data);
-  } catch (err) {
-    throw new Error("Error reading or parsing data file");
-  }
-};
-
-const filterData = (data, filter) => {
-  if (!filter) return data;
-  const lowercasedFilter = filter.toLowerCase();
-  return data.filter(
-    (item) =>
-      item.name.toLowerCase().includes(lowercasedFilter) ||
-      item.language.toLowerCase().includes(lowercasedFilter) ||
-      item.bio.toLowerCase().includes(lowercasedFilter)
-  );
-};
-
-const sortData = (data, sortBy, order) => {
-  if (!["asc", "desc"].includes(order)) {
-    throw new Error('Invalid sort order. Use "asc" or "desc".');
-  }
-  if (!data.every((item) => item.hasOwnProperty(sortBy))) {
-    throw new Error(`Invalid sortBy field: ${sortBy}.`);
-  }
-  return data.sort((a, b) => {
-    if (a[sortBy] < b[sortBy]) return -1 * order;
-    if (a[sortBy] > b[sortBy]) return 1 * order;
-    return 0;
-  });
-};
+const filePath = path.resolve(__dirname, "../../data/dummyData.json");
+const dataHandler = new DataHandler(filePath);
 
 router.get("/data", async (req, res) => {
-  try {
-    let jsonData = await readJsonFile(filePath);
-
-    if (req.query.filter) {
-      jsonData = filterData(jsonData, req.query.filter);
+    try {
+        const { filter, sortBy } = req.query;
+        const jsonData = await dataHandler.getData(filter, sortBy);
+        res.status(200).json(jsonData);
+    } catch (err) {
+        console.error("API Error:", err.message);
+        res.status(500).json({
+            error: "Internal Server Error: " + err.message,
+        });
     }
-
-    if (req.query.sortBy) {
-      const sortBy = req.query.sortBy;
-      const order = req.query.order === "desc" ? -1 : 1;
-
-      jsonData = sortData(jsonData, sortBy, order);
-    }
-
-    res.json(jsonData);
-  } catch (err) {
-    console.error("Error:", err.message);
-    res.status(400).json({ error: err.message });
-  }
 });
 
-module.exports = router;
+export default router;
